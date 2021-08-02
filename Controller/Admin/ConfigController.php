@@ -644,6 +644,8 @@ class ConfigController extends AbstractController
                             $value[$column] = isset($data['product_status_id']) && strlen($data['product_status_id'] > 0) ? $data['product_status_id'] : 0;
                         }
                         // 共通処理
+                    } elseif ($column == 'only_customer') {
+                        $value[$column] = 'false';
                     } elseif ($column == 'discriminator_type') {
                         $search = ['dtb_', 'mtb_', '_'];
                         $value[$column] = str_replace($search, '', $tableName);
@@ -1486,9 +1488,7 @@ class ConfigController extends AbstractController
                             $value['id'] = $i; // 2.4.4
                         }
                         // dtb_order_detail.tax_ruleははdtb_tax_rule.calc_ruleの値
-                        $value['rounding_type_id'] = isset($data['tax_rule'])
-                            ? $data['tax_rule']
-                            : $this->baseinfo['tax_rule'];
+                        $value['rounding_type_id'] = 1;
 
                         $value['tax_type_id'] = 1;
                         $value['tax_display_type_id'] = 1;
@@ -1501,6 +1501,7 @@ class ConfigController extends AbstractController
                             $value['tax_rate'] = $data['tax_rate'] = $this->baseinfo['tax'];
                             $data['point_rate'] = $this->baseinfo['point_rate'];
                         }
+                        $value['tax_rate'] = $data['tax_rate'] = 10;
 
                         // 2.4.4
                         if ($this->flag_244) {
